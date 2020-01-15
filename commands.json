@@ -1,0 +1,20 @@
+{
+  "commands": [
+    {
+      "type": "sendSMS",
+      "command": "+CMGS=(da)[,(toda)]’MESSAGE HERE’(CTRL-Z)"
+    },
+    {
+      "type": "deleteSMS",
+      "command": "AT+CMGD=(index)[,2]"
+    },
+    {
+      "type": "readSMS",
+      "command": "AT+CMGR=(index)[,0]"
+    },
+    {
+      "type": "listSMS",
+      "command": "AT+CMGL=(stat)[,0]"
+    }
+  ]
+}
