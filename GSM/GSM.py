@@ -56,6 +56,8 @@ def statusreport():
                     msg = "Stack Busy"
                 if locationcode == 65535:
                     msg = "Other Error"
+                else:
+                    msg = "Error: no Location Code"
             ser.write(msg)
             time.sleep(3)
             ser.write('AT+CMGDA="DEL ALL"\r')  # delete all SMS
