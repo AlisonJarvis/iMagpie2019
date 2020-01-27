@@ -31,7 +31,7 @@ def statusreport():
         if reply != "":  # if reply isn't blank
             ser.write("AT+CMGR=1\r")  # command to read SMS
             time.sleep(3)
-            reply = ser.read(ser.inWaiting())
+            reply = str(ser.read(ser.inWaiting()))
             if "GSMStatus" in reply:
                 t = str(datetime.datetime.now())  # time using datetime library
 
@@ -41,7 +41,7 @@ def statusreport():
                 ser.write('AT+CMGS="+1XXXXXXXXXX"\r')  # send SMS to given phone number
                 time.sleep(3)
                 if locationcode == 0:
-                    msg = "GPS time: " + t + "GPS Location: " + "Longitude: " + long + "Latitude: " + lat
+                    msg = "GPS date and time: " + gsmdate + gsmtime + "GPS Location: " + "Longitude: " + long + "Latitude: " + lat
                 if locationcode == 404:
                     msg = "Not Found"
                 if locationcode == 408:
@@ -58,7 +58,7 @@ def statusreport():
                     msg = "Other Error"
                 else:
                     msg = "Error: no Location Code"
-            ser.write(msg)
+                ser.write(msg)
             time.sleep(3)
             ser.write('AT+CMGDA="DEL ALL"\r')  # delete all SMS
             time.sleep(3)
@@ -104,7 +104,7 @@ def dataread():
         if reply != "":  # if reply isn't blank
             ser.write("AT+CMGR=1\r")  # command to read SMS
             time.sleep(3)
-            reply = ser.read(ser.inWaiting())
+            reply = str(ser.read(ser.inWaiting()))
             if "NORAD ID" in reply:
                 # NORAD ID stuff
             if "RA/Dec" in reply:
