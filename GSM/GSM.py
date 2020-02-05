@@ -115,4 +115,3 @@ def dataread():
             ser.read(ser.inWaiting())  # clear buf
         time.sleep(5)
 
-
