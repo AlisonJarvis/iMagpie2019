@@ -2,7 +2,7 @@ import win32com.client
 import datetime
 
 
-def driver(ra, dec, tcommand):
+def driver(ra, dec):
     mount = win32com.client.Dispatch("mountid")
 
     if mount.Connected:
@@ -14,10 +14,11 @@ def driver(ra, dec, tcommand):
         else:
             print("Unable to connect")
 
-    t = datetime.datetime.now()
+    # deal with time
+    # t = datetime.datetime.now()  #time now
 
-    if tcommand >= t:
-        mount.SlewToCoordinates(ra, dec)
-        mount.Tracking = True
-        mount.Connected = False
+    # if tcommand >= t:
+    mount.SlewToCoordinates(ra, dec)
+    mount.Tracking = True
+    mount.Connected = False
 
