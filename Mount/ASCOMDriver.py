@@ -22,20 +22,24 @@ def setup():
     ser.write("SG-360")  # set timezone
     ser.write(":SDS0#")  # not DST
 
-    return [altaz, altlimit]
+    return [altaz, altlimit, ser]
 
 
 def driver(alt, az):
     #  Alt/az should be input as 8 character .01 arcsecond (idk exactly what this means)
     #  Also could convert this within function
     # define serial port being used  (dependant on Pi number)
-    ser_port = "/dev/ttyUSB0"  # defining serial port as using USB (Linux standard)
 
-    # define settings
-    ser = serial.Serial(ser_port, 9600, timeout=5)
+    notused1, notused2, ser = setup()
 
-    ser.write(":SasTTTTTTTT#")  # define command altitude
-    ser.write(":SzTTTTTTTTT#")  # define command azimuth
+    alt = str(alt)
+    az = str(az)
+
+    ser.write(":Sas" + alt + "#")  # define command altitude
+    ser.write(":Sz" + az + "#")  # define command azimuth
+
+    ser.write(":MS#")  # command to slew to defined coordinates
+    ser.write(":ST1#")  # command to start tracking
 
 
 
