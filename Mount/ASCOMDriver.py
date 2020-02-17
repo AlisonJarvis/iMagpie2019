@@ -22,6 +22,9 @@ def setup():
     ser.write("SG-360")  # set timezone
     ser.write(":SDS0#")  # not DST
 
+    print(altaz)
+    print(altlimit)
+
     return [altaz, altlimit, ser]
 
 
