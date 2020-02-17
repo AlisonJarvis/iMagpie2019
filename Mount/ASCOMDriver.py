@@ -42,5 +42,12 @@ def driver(alt, az):
     ser.write(":ST1#")  # command to start tracking
 
 
+def calibrate():
+    notused1, notused2, ser = setup()
+
+    ser.write(":Q#")  # stop slewing
+    ser.write(":ST0#")  # stop tracking
+    ser.write(":CM#")  # command to calibrate
+
 
 
