@@ -19,7 +19,7 @@ def setup():
     altlimit = ser.write(":GAL#")  # check altitude limit
 
     ser.write(':RT0#')  # set sidereal tracking
-    ser.write("SG-360")  # set timezone
+    ser.write("SG-420")  # set timezone
     ser.write(":SDS0#")  # not DST
 
     print(altaz)
