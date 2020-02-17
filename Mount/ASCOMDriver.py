@@ -32,8 +32,12 @@ def driver(alt, az):
 
     notused1, notused2, ser = setup()
 
+    alt = alt*3600.0
     alt = str(alt)
+    alt = alt.rjust(8, '0')
+    az = az*3600.0
     az = str(az)
+    az = az.rjust(8, '0')
 
     ser.write(":Sas" + alt + "#")  # define command altitude
     ser.write(":Sz" + az + "#")  # define command azimuth
