@@ -10,6 +10,8 @@ def setup():
     # GPIO.setup(buttonNum, GPIO.IN, GPIO.PUD_UP)  # defines button, input, and pull up (not sure what that last one
     # means)
 
+    print("running setup...")
+
     # define serial port being used  (dependant on Pi number)
     ser_port = "/dev/ttyUSB0"  # defining serial port as using USB (Linux standard)
 
