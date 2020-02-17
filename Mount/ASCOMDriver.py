@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
-import serial
-from serial import Serial
+import pyserial
+from pyserial import Serial
 
 # define button number
 buttonNum = 3  # customize for how we wire the Pi
