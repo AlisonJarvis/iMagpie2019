@@ -1,11 +1,10 @@
 import ASCOMDriver as ASCOM
+import time
 
-print("starting calibration...")
-ASCOM.calibrate()
-print("calibration done")
+ASCOM.setup("/dev/tty.usbserial-AQ00LYCP")
+# ASCOM.driver(90, 180)
 
-print("starting actuation...")
-ASCOM.driver(45.0, 180.0)
-print("actuation complete")
+# time.sleep(10)
+# ASCOM.zeroposition()
 
 
