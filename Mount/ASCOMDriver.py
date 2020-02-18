@@ -7,10 +7,6 @@ serport = "/dev/tty.usbserial-AQ00LYCP"
 
 
 def setup(ser_port):
-    # GPIO.setmode(GPIO.BOARD)  # sets board as mode
-    # GPIO.setup(buttonNum, GPIO.IN, GPIO.PUD_UP)  # defines button, input, and pull up (not sure what that last one
-    # means)
-
     print("running setup...")
 
     #  define settings
@@ -23,7 +19,8 @@ def setup(ser_port):
     ser.write(b':SAL-89#')
     response = ser.readline()
     packet = response.decode()
-    print("New alt limit?: " + packet)
+    if packet != "1":
+        print("Error: Limit set command denied")
 
     ser.write(b':GAL#')  # check altitude limit
     response = ser.readline()
@@ -47,28 +44,29 @@ def driver(alt, az):
     alt = round(alt)
     alt = str(alt)
     alt = alt.rjust(8, '0')
-    print("Alt input: " + alt)
 
     az = az*360000
     az = round(az)
     az = str(az)
     az = az.rjust(8, '0')
-    print("Az input: " + az)
 
     ser.write(b':Sas' + alt.encode() + b'#')  # define command altitude
     response = ser.readline()
     packet = response.decode()
-    print("Altitude?: " + packet)
+    if packet != "1":
+        print("Error: Alt command denied")
 
     ser.write(b':Sz' + az.encode() + b'#')  # define command azimuth
     response = ser.readline()
     packet = response.decode()
-    print("Azimuth?: " + packet)
+    if packet != "1":
+        print("Error: Az command denied")
 
     ser.write(b':MS#')  # command to slew to defined coordinates
     response = ser.readline()
     packet = response.decode()
-    print("Slew to Coordinates?: " + packet)
+    if packet != "1":
+        print("Error: Slew command denied")
 
     time.sleep(10)
     ser.write(b':GAC#')  # check current alt-az
@@ -83,20 +81,14 @@ def driver(alt, az):
 
 
 def calibrate():
-
-    ser.write(b':Q#')  # stop slewing
-    ser.write(b':ST0#')  # stop tracking
+    ser = serial.Serial("/dev/tty.usbserial-AQ00LYCP", 9600, timeout=5)
     ser.write(b':CM#')  # command to calibrate
-
+    response = ser.readline()
+    packet = response.decode()
+    print("Calibration?: " + packet)
 
 def zeroposition():
     ser = serial.Serial("/dev/tty.usbserial-AQ00LYCP", 9600, timeout=5)
-
-    # ser.write(b':MSH#')  # search for zero position
-    # response = ser.readline()
-    # packet = response.decode()
-    # print("Position search?: " + packet)
-    # time.sleep(10)
 
     ser.write(b':MH#')  # slew to zero position
     response = ser.readline()
