@@ -1,11 +1,10 @@
 import ASCOMDriver as ASCOM
 import time
+from Mount import Mount
 
-# ASCOM.setup("/dev/tty.usbserial-AQ00LYCP")
-# ASCOM.driver(30, 30)
+mount = Mount("/dev/tty.usbserial-AQ00LYCP",9600, 5)
+mount.slew_to_mech_zero()
 
-# time.sleep(10)
-ASCOM.zeroposition()
-# ASCOM.calibrate()
+
 
 
