@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)https://www.celestrak.com/NORAD/documentation/tle-fmt.php -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>CelesTrak: NORAD Two-Line Element Set Format</title>
+
+<link rel="stylesheet" type="text/css" href="./CelesTrak_ NORAD Two-Line Element Set Format_files/site.css">
+
+</head>
+
+<body bgcolor="#DEECEC">
+
+<table class="center" width="800"><tbody><tr><td>
+	
+<h1 class="center">NORAD Two-Line Element Set Format</h1>
+
+<p>Data for each satellite consists of three lines in the following format:</p>
+
+<pre>AAAAAAAAAAAAAAAAAAAAAAAA
+1 NNNNNU NNNNNAAA NNNNN.NNNNNNNN +.NNNNNNNN +NNNNN-N +NNNNN-N N NNNNN
+2 NNNNN NNN.NNNN NNN.NNNN NNNNNNN NNN.NNNN NNN.NNNN NN.NNNNNNNNNNNNNN
+</pre>
+
+<p>Line 0 is a twenty-four character name (to be consistent with the name length in the
+NORAD SATCAT).</p>
+
+<p>Lines 1 and 2 are the standard Two-Line Orbital Element Set Format identical to that
+used by NORAD and NASA. The format description is:</p>
+
+<table class="center outline striped" cellpadding="3">
+  <tbody><tr class="header">
+    <th colspan="2">Line 1</th>
+  </tr>
+  <tr>
+    <th width="75">Column</th>
+    <th width="500">Description</th>
+  </tr>
+  <tr>
+    <td class="center">01</td>
+    <td>Line Number of Element Data</td>
+  </tr>
+  <tr>
+    <td class="center">03-07</td>
+    <td>Satellite Number</td>
+  </tr>
+  <tr>
+    <td class="center">08</td>
+    <td>Classification (U=Unclassified)</td>
+  </tr>
+  <tr>
+    <td class="center">10-11</td>
+    <td>International Designator (Last two digits of launch year)</td>
+  </tr>
+  <tr>
+    <td class="center">12-14</td>
+    <td>International Designator (Launch number of the year)</td>
+  </tr>
+  <tr>
+    <td class="center">15-17</td>
+    <td>International Designator (Piece of the launch)</td>
+  </tr>
+  <tr>
+    <td class="center">19-20</td>
+    <td>Epoch Year (Last two digits of year)</td>
+  </tr>
+  <tr>
+    <td class="center">21-32</td>
+    <td>Epoch (Day of the year and fractional portion of the day)</td>
+  </tr>
+  <tr>
+    <td class="center">34-43</td>
+    <td>First Time Derivative of the Mean Motion</td>
+  </tr>
+  <tr>
+    <td class="center">45-52</td>
+    <td>Second Time Derivative of Mean Motion (decimal point assumed)</td>
+  </tr>
+  <tr>
+    <td class="center">54-61</td>
+    <td>BSTAR drag term (decimal point assumed)</td>
+  </tr>
+  <tr>
+    <td class="center">63</td>
+    <td>Ephemeris type</td>
+  </tr>
+  <tr>
+    <td class="center">65-68</td>
+    <td>Element number</td>
+  </tr>
+  <tr>
+    <td class="center">69</td>
+    <td>Checksum (Modulo 10)<br>
+    (Letters, blanks, periods, plus signs = 0; minus signs = 1)</td>
+  </tr>
+</tbody></table>
+
+<table class="center outline striped" cellpadding="3">
+  <tbody><tr class="header">
+    <th colspan="2">Line 2</th>
+  </tr>
+  <tr>
+    <th width="75">Column</th>
+    <th width="500">Description</th>
+  </tr>
+  <tr>
+    <td class="center">01</td>
+    <td>Line Number of Element Data</td>
+  </tr>
+  <tr>
+    <td class="center">03-07</td>
+    <td>Satellite Number</td>
+  </tr>
+  <tr>
+    <td class="center">09-16</td>
+    <td>Inclination [Degrees]</td>
+  </tr>
+  <tr>
+    <td class="center">18-25</td>
+    <td>Right Ascension of the Ascending Node [Degrees]</td>
+  </tr>
+  <tr>
+    <td class="center">27-33</td>
+    <td>Eccentricity (decimal point assumed)</td>
+  </tr>
+  <tr>
+    <td class="center">35-42</td>
+    <td>Argument of Perigee [Degrees]</td>
+  </tr>
+  <tr>
+    <td class="center">44-51</td>
+    <td>Mean Anomaly [Degrees]</td>
+  </tr>
+  <tr>
+    <td class="center">53-63</td>
+    <td>Mean Motion [Revs per day]</td>
+  </tr>
+  <tr>
+    <td class="center">64-68</td>
+    <td>Revolution number at epoch [Revs]</td>
+  </tr>
+  <tr>
+    <td class="center">69</td>
+    <td>Checksum (Modulo 10)</td>
+  </tr>
+</tbody></table>
+
+<p>All other columns are blank or fixed.</p>
+
+<p>Example:</p>
+
+<pre>NOAA 14                 
+1 23455U 94089A   97320.90946019  .00000140  00000-0  10191-3 0  2621
+2 23455  99.0090 272.6745 0008546 223.1686 136.8816 14.11711747148495
+</pre>
+
+<p>For further information, see <a href="https://www.celestrak.com/columns/v04n03/">"Frequently
+Asked Questions: Two-Line Element Set Format"</a> in the <i>Computers &amp;
+Satellites</i> column of <i>Satellite Times</i>, Volume 4 Number 3.</p>
+
+</td></tr></tbody></table>
+
+<hr width="50%">
+
+<table class="center outline striped-odd">
+<tbody><tr class="header">
+	<th rowspan="7" width="140"><a href="https://celestrak.com/" title="CelesTrak Home Page"><img border="0" src="./CelesTrak_ NORAD Two-Line Element Set Format_files/celestrak-65.gif" valign="middle"></a></th>
+	<th width="120">TLE Data</th>
+	<th width="120">Space Data</th>
+  <th rowspan="7" width="140"><a href="http://www.centerforspace.com/" title="Center for Space Standards &amp; Innovation"><img border="0" src="./CelesTrak_ NORAD Two-Line Element Set Format_files/cssi-65b.gif" valign="middle"></a></th></tr>
+<tr>
+	<th><a href="https://www.celestrak.com/NORAD/elements/" title="Current Two-Line Element Sets">Current</a></th>
+	<th><a href="https://www.celestrak.com/GPS/" title="GPS Status Messages, NANUs, and Almanacs">GPS</a></th></tr>
+<tr>
+	<th><a href="https://www.celestrak.com/NORAD/archives/" title="Historical Two-Line Element Sets">Archives</a></th>
+	<th><a href="https://www.celestrak.com/SpaceData/" title="Earth Orientation Parameters">EOP</a></th></tr>
+<tr>
+	<th><a href="https://www.celestrak.com/NORAD/documentation/" title="Documentation on NORAD Orbital Models">Documentation</a></th>
+	<th><a href="https://www.celestrak.com/SpaceData/" title="Space Weather">Space Weather</a></th></tr>
+<tr>
+	<th><a href="https://www.celestrak.com/satcat/search.php" title="Search the Satellite Catalog">SATCAT</a></th>
+  <th><a href="https://www.celestrak.com/columns/" title="Computers &amp; Satellites Columns">Columns</a></th></tr>
+<tr>
+	<th><a href="https://www.celestrak.com/satcat/boxscore.php" title="SATCAT Boxscore">Boxscore</a></th>
+  <th><a href="https://www.celestrak.com/software/" title="Software Repository">Software</a></th></tr>
+<tr><th colspan="2"><a href="https://www.celestrak.com/SOCRATES/" title="Satellite Orbital Conjunction Reports Assessing Threatening Encounters in Space">SOCRATES</a></th></tr>
+<tr><td class="center" colspan="4" width="520"><i>We do not use cookies on CelesTrak and we do not collect any personal information, other than IP addresses, 
+  	which are used to detect and block malicious activity and to assess system performance. We do not use IP addresses for tracking or any other purposes.
+  	No personal data is shared with third parties.
+  	For further details, see <a target="agi" href="https://www.celestrak.com/web/AGI-Privacy-Policy.pdf">AGI's privacy policy.</a></i></td></tr>
+</tbody></table>
+<br>
+<address class="center">
+  <a href="https://www.celestrak.com/webmaster.php" title="About the Webmaster">Dr. T.S. Kelso</a> 
+  <a href="mailto:TS.Kelso@celestrak.com">[TS.Kelso@celestrak.com]</a><br>
+	Follow CelesTrak on Twitter <a href="https://twitter.com/TSKelso">@TSKelso</a><br>
+	  Last updated: 2018 Jun 27 03:04:43 UTC<br>
+  Accessed 293,608 times since 2000 December 16<br>
+  Current system time: 2019 Nov 18 18:50:15 UTC
+</address>
+
+
+
+
+<iframe id="mc-sidebar-container" style="top: 0px; padding: 0px; margin: 0px; z-index: 2147483646; position: fixed; border: none; opacity: 0; left: auto; right: 0px; display: block; max-width: none; transition: width 0s ease 0.4s, height 0s ease 0.4s, opacity 0.4s ease 0s, transform 0.4s ease 0s; transform: translate3d(400px, 0px, 0px); width: 400px; height: 0px;" src="./CelesTrak_ NORAD Two-Line Element Set Format_files/saved_resource.html"></iframe><iframe id="mc-topbar-container" style="top: 0px; padding: 0px; margin: 0px; z-index: 2147483646; position: fixed; border: none; opacity: 0; left: 0px; display: block; max-height: none; transition: width 0s ease 0.4s, height 0s ease 0.4s, opacity 0.4s ease 0s, transform 0.4s ease 0s; transform: translate3d(0px, -50px, 0px); height: 50px; width: 0px;" src="./CelesTrak_ NORAD Two-Line Element Set Format_files/saved_resource(1).html"></iframe><iframe id="mc-toast-container" style="bottom: 0px; right: 0px; padding: 0px; margin: 0px; z-index: 2147483640; position: fixed; border: none; opacity: 0; display: block; height: 0px; width: 0px;" src="./CelesTrak_ NORAD Two-Line Element Set Format_files/saved_resource(2).html"></iframe><iframe id="mc-download-overlay-container" style="bottom: 0px; right: 0px; padding: 0px; margin: 0px; z-index: 2147483640; position: fixed; border: none; opacity: 0; display: block; height: 0px; width: 0px;" src="./CelesTrak_ NORAD Two-Line Element Set Format_files/saved_resource(3).html"></iframe></body></html>

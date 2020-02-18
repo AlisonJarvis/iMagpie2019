@@ -1,0 +1,10 @@
+{
+  "gsmCommands": {
+    "sendSMS": {
+      "Command": "+CMGS=(da)[,(toda)]’MESSAGE HERE’(CTRL-Z)",
+      "inputs": "(da): Destination Address"
+    }
+  }
+
+
+}

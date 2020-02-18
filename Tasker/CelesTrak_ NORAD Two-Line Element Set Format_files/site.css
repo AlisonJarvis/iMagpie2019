@@ -1,0 +1,36 @@
+body { background : #deecec; color : black; font-family : Verdana, Arial, sans-serif; }
+a:link { color : blue; }
+a:visited { color : navy; }           
+a:active { color : red; }     
+a:hover {color : red; }    
+a { text-decoration : none; }
+a.notice { color : red; font-weight : bold; font-size : 10pt; }
+a.notice:visited { color : red; font-weight : normal; font-size : 10pt; }
+b { font-weight : bold; }
+h1 { font-size : 20pt; font-weight : bold; }
+h2 { font-size : 16pt; font-weight : bold; }
+h3 { font-size : 12pt; font-weight : bold; }
+p { font-size : 10pt; font-family : Verdana, Arial, sans-serif; }
+p.blue { color : blue; }
+h1,h2,h3,p.center { text-align : center; }
+table.outline { border : 2px solid skyblue; }
+table.center { margin-left : auto; margin-right: auto; }
+table.striped tr:nth-child(even) { background-color: lightblue; }
+table.striped tbody tr:hover { background-color: skyblue; }
+table.striped-odd tr:nth-child(odd) { background-color: lightblue; }
+tr.header { background-color : skyblue; }
+tr.shade { background-color : lightblue; }
+th { font-size : 10pt; font-weight : bold; font-family : Verdana, Arial, sans-serif; }
+td { font-size : 10pt; font-family : Verdana, Arial, sans-serif; }
+th,td.small { font-size : 9pt; }
+td.center { text-align : center; }
+ul { font-size : 10pt; }
+ol { font-size : 10pt; }
+blockquote { font-size : 10pt; }
+address { font-size : 10pt; font-weight : italic; font-family : Verdana, Arial, sans-serif; }
+address.center { text-align : center; }
+pre { font-size : 10pt; }
+#left { float : left; }
+#right { float : right; }
+div.left  { float : left; }
+div.right { float : right; }

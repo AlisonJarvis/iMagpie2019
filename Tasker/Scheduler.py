@@ -5,6 +5,7 @@ import math as math
 import taskHelper
 import sgp4 as sgp4
 import numpy as np
+from pycraf import satellite
 
 
 ## Some constants i think
@@ -28,12 +29,12 @@ ALT = 1.623974#km
 
 R_site_ECEF, V_site_ECEF = taskHelper.site(LAT,LONG,ALT)
 
-R_site_ECEF = np.array([[R_site_ECEF[0]],[R_site_ECEF[1]],[R_site_ECEF[2]]])
-V_site_ECEF = np.array([[V_site_ECEF[0]],[V_site_ECEF[1]],V_site_ECEF[2]])
+#R_site_ECEF = np.array([[R_site_ECEF[0]],[R_site_ECEF[1]],[R_site_ECEF[2]]])
+#V_site_ECEF = np.array([[V_site_ECEF[0]],[V_site_ECEF[1]],V_site_ECEF[2]])
 
 ## select satellite and propegate
 
-id = '28874'
+id = '43873'
 id = id.rjust(5)
 
 counter = 0
@@ -48,6 +49,8 @@ with open ('3le.txt', 'r') as TLEs:
             line2 = line
             #print(line)
             break
+
+
 
 satellite = twoline2rv(line1,line2,wgs72)
 
