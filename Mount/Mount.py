@@ -33,8 +33,8 @@ class Mount:
         packet = response.decode()
         return packet
 
-    def set_track_type(self, type):
-        self.ser.write(b':RT' + type.encode() + b'#')
+    def set_track_type(self, t_type):
+        self.ser.write(b':RT' + t_type.encode() + b'#')
         response = self.ser.readline()
         packet = response.decode()
         if packet != "1":
