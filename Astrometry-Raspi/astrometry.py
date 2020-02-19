@@ -10,11 +10,11 @@ Hi = 5.5 #Upper bound of arc second per pixel of picture
 sample = 2 #downsample the picture by this factor first before solving
 
 
-cmd = "./solve-field --ra %f --dec %f --radius %f -L %f -H %f -u arcsecperpix --downsample %d --no-plots -D ~/Desktop/_APP3220.solvage ~/Desktop/_APP3220.solvage/_APP3220.jpg" % (RA,DEC,radius,Low,Hi,sample,)
+cmd = "/usr/local/astrometry/bin sudo ./solve-field --ra %f --dec %f --radius %f -L %f -H %f -u arcsecperpix --downsample %d --no-plots -D ~/Desktop/_APP3220.solvage ~/Desktop/_APP3220.solvage/_APP3220.jpg" % (RA,DEC,radius,Low,Hi,sample,)
 proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE) #saving terminal output to variables within python
 # os.system("cmd") #execute astrometry terminal command
 output = proc.communicate()[0] #communicate with the opened process
-output = output.split("\n") #parsing into each line
+output = output.split(b"\n") #parsing into each line
 #output = output[0].split("\\") #dunno i was told this one
 """
 for line in output: #parse line by line
@@ -26,9 +26,9 @@ print("Field Rotation angle index = " + str(Field_rotation_index)) #find index w
 """""
 
 for line in output:
-    if line.find("Field center: (RA,Dec) ="):
+    if line.find(b"Field center: (RA,Dec) ="):
         RA_Dec_Line = line
-    if line.find("Field rotation angle:"):
+    if line.find(b"Field rotation angle:"):
         Rot_Angle_Line = line
         break
 
