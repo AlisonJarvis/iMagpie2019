@@ -65,6 +65,11 @@ class Mount:
     def set_alt_az(self, alt, az):
         alt = alt * 360000
         alt = round(alt)
+        if alt >= 0:
+            signstr = '+'
+        else:
+            signstr = '-'
+        alt = abs(alt)
         alt = str(alt)
         alt = alt.rjust(8, '0')
 
@@ -73,17 +78,17 @@ class Mount:
         az = str(az)
         az = az.rjust(8, '0')
 
+        self.ser.write(b':Sa' + signstr.encode() + alt.encode() + b'#')  # define command altitude
+        response1 = self.ser.readline()
+        packet1 = response1.decode()
+        if packet1 != "1":
+            print("Error: Alt command denied")
+
         self.ser.write(b':Sz' + az.encode() + b'#')  # define command azimuth
         response2 = self.ser.readline()
         packet2 = response2.decode()
         if packet2 != "1":
             print("Error: Az command denied")
-            
-        self.ser.write(b':Sas' + alt.encode() + b'#')  # define command altitude
-        response1 = self.ser.readline()
-        packet1 = response1.decode()
-        if packet1 != "1":
-            print("Error: Alt command denied")
 
         return [packet1, packet2]
 
@@ -128,3 +133,42 @@ class Mount:
             print('Error: we gon keep slewing')
         return packet
 
+    def set_ra_dec(self, ra, dec):
+        ra = ra * (3.6*10 ** 6)  # this goes from hrs to ms
+        ra = round(ra)
+        ra = str(ra)
+        ra = ra.rjust(8, '0')
+
+        dec = dec * 360000
+        dec = round(dec)
+        if dec >= 0:
+            signstr = '+'
+        else:
+            signstr = '-'
+        dec = abs(dec)
+        dec = str(dec)
+        dec = dec.rjust(8, '0')
+
+        self.ser.write(b':Sr' + ra.encode() + b'#')  # RA command
+        response1 = self.ser.readline()
+        packet1 = response1.decode()
+        if packet1 != "1":
+            print("Error: RA command denied")
+
+        self.ser.write(b':Sd' + signstr.encode() + dec.encode() + b'#')  # dec command
+        response2 = self.ser.readline()
+        packet2 = response1.decode()
+        if packet2 != "1":
+            print("Error: dec command denied")
+
+    def current_ra_dec(self):
+        self.ser.write(b':GEC#')
+        response = self.ser.readline()
+        packet = response.decode()
+        return packet
+
+    def set_mech_zero(self):
+        self.ser.write(b':SZP#')
+        response = self.ser.readline()
+        packet = response.decode()
+        return packet
