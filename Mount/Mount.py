@@ -76,7 +76,6 @@ class Mount:
         self.ser.write(b':Sas' + alt.encode() + b'#')  # define command altitude
         response1 = self.ser.readline()
         packet1 = response1.decode()
-
         if packet1 != "1":
             print("Error: Alt command denied")
 
@@ -119,5 +118,13 @@ class Mount:
         packet = response.decode()
         if packet != '1':
             print('Error: we not going there home boi')
+        return packet
+
+    def stop_slew(self):
+        self.ser.write(b':Q#')  # stop slewing
+        response = self.ser.readline()
+        packet = response.decode()
+        if packet != '1':
+            print('Error: we gon keep slewing')
         return packet
 
