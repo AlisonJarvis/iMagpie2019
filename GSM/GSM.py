@@ -55,3 +55,18 @@ class GSM:
         response = self.ser.readline()
         packet = response.decode()
         return packet
+
+    def send_sms(self, number, msg):
+        str(number)
+        self.ser.write(b'AT+CMGS=' + number.encode())  # send msg to number
+        response = self.ser.readline()
+        packet1 = response.decode()
+
+        str(msg)
+        self.ser.write(msg.encode())
+        response = self.ser.readline()
+        packet2 = response.decode()
+
+        return packet1, packet2
+
+
