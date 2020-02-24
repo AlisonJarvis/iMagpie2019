@@ -54,6 +54,10 @@ class GSM:
         #        1 Not change status of the specified SMS record
         response = self.ser.readline()
         packet = response.decode()
+
+        if packet == "GSMStatus":
+            number = 'sdfd'
+            self.check_status(1, number)
         return packet
 
     def send_sms(self, number, msg):
@@ -69,4 +73,120 @@ class GSM:
 
         return packet1, packet2
 
+    def check_status(self, mode, number):
+        # mode is 1 for location, date/time
+        #         2 for just date/time
+        mode = str(mode)
+        self.ser.write(b"AT+CIPGSMLOC=" + mode.encode())
+        response = self.ser.readline()
+        packet = response.decode()
 
+        #sort packet for parameters
+        if mode == '1':
+            locationcode = packet[0:packet.find("[")]
+            packet = packet[packet.find(',') + 1:-1] + ']'
+            gsm_long = packet[0:packet.find(',')]
+            packet = packet[packet.find(',') + 1:-1] + ']'
+            gsm_lat = packet[0:packet.find(',')]
+            packet = packet[packet.find(',') + 1:-1] + ']'
+            gsm_date = packet[0:packet.find(',')]
+            packet = packet[packet.find(',') + 1:-1] + ']'
+            gsm_time = packet[0:-1]
+
+            # error handling
+            if locationcode == 0:
+                msg = "GPS date and time: " + gsm_date + gsm_time + "GPS Location: " + "Longitude: " + gsm_long + "Latitude: " + gsm_lat
+                # send message
+                self.send_sms(number, msg)
+            if locationcode == 404:
+                msg = "Not Found"
+                # send message
+                self.send_sms(number, msg)
+            if locationcode == 408:
+                msg = "Request Timed Out"
+                # send message
+                self.send_sms(number, msg)
+            if locationcode == 601:
+                msg = "Network Error"
+                # send message
+                self.send_sms(number, msg)
+            if locationcode == 602:
+                msg = "No Memory"
+                # send message
+                self.send_sms(number, msg)
+            if locationcode == 603:
+                msg = "DNS Error"
+                # send message
+                self.send_sms(number, msg)
+            if locationcode == 604:
+                msg = "Stack Busy"
+                # send message
+                self.send_sms(number, msg)
+            if locationcode == 65535:
+                msg = "Other Error"
+                # send message
+                self.send_sms(number, msg)
+            else:
+                msg = "Error: no Location Code"
+                # send message
+                self.send_sms(number, msg)
+
+            return locationcode, gsm_date, gsm_time, gsm_lat, gsm_long
+
+        if mode == '2':
+            locationcode = packet[0:packet.find("[")]
+            packet = packet[packet.find(',') + 1:-1] + ']'
+            gsm_date = packet[0:packet.find(',')]
+            packet = packet[packet.find(',') + 1:-1] + ']'
+            gsm_time = packet[0:-1]
+            # error handling
+            if locationcode == 0:
+                msg = "GPS date and time: " + gsm_date + gsm_time
+                # send message
+                self.send_sms(number, msg)
+            if locationcode == 404:
+                msg = "Not Found"
+                # send message
+                self.send_sms(number, msg)
+            if locationcode == 408:
+                msg = "Request Timed Out"
+                # send message
+                self.send_sms(number, msg)
+            if locationcode == 601:
+                msg = "Network Error"
+                # send message
+                self.send_sms(number, msg)
+            if locationcode == 602:
+                msg = "No Memory"
+                # send message
+                self.send_sms(number, msg)
+            if locationcode == 603:
+                msg = "DNS Error"
+                # send message
+                self.send_sms(number, msg)
+            if locationcode == 604:
+                msg = "Stack Busy"
+                # send message
+                self.send_sms(number, msg)
+            if locationcode == 65535:
+                msg = "Other Error"
+                # send message
+                self.send_sms(number, msg)
+            else:
+                msg = "Error: no Location Code"
+                # send message
+                self.send_sms(number, msg)
+
+            return locationcode, gsm_date, gsm_time
+
+    def write_to_storage(self, number, msg):
+        self.ser.write(b'AT+CMGW=' + number.encode())
+        response = self.ser.readline()
+        packet1 = response.decode()
+
+        str(msg)
+        self.ser.write(msg.encode())
+        response = self.ser.readline()
+        packet2 = response.decode()
+
+        return packet1, packet2
