@@ -1,9 +1,8 @@
-import RPi.GPIO as GPIO
 import serial
 import time, sys
 import datetime
 
-# define button number
+"""# define button number
 buttonNum = 3  # customize for how we wire the Pi
 
 
@@ -113,5 +112,15 @@ def dataread():
             ser.write('AT+CMGDA="DEL ALL"\r')  # delete all SMS
             time.sleep(3)
             ser.read(ser.inWaiting())  # clear buf
-        time.sleep(5)
+        time.sleep(5)"""
 
+packet = '<locationcode>[,<longitude>,<latitude>,<date>,<time>]'
+locationcode = packet[0:packet.find("[")]
+packet = packet[packet.find(',')+1:-1] + ']'
+gsm_long = packet[0:packet.find(',')]
+packet = packet[packet.find(',')+1:-1] + ']'
+gsm_lat = packet[0:packet.find(',')]
+packet = packet[packet.find(',')+1:-1] + ']'
+gsm_date = packet[0:packet.find(',')]
+packet = packet[packet.find(',')+1:-1] + ']'
+gsm_time = packet[0:-1]

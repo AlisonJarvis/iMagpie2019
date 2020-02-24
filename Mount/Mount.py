@@ -73,17 +73,17 @@ class Mount:
         az = str(az)
         az = az.rjust(8, '0')
 
-        self.ser.write(b':Sas' + alt.encode() + b'#')  # define command altitude
-        response1 = self.ser.readline()
-        packet1 = response1.decode()
-        if packet1 != "1":
-            print("Error: Alt command denied")
-
         self.ser.write(b':Sz' + az.encode() + b'#')  # define command azimuth
         response2 = self.ser.readline()
         packet2 = response2.decode()
         if packet2 != "1":
             print("Error: Az command denied")
+            
+        self.ser.write(b':Sas' + alt.encode() + b'#')  # define command altitude
+        response1 = self.ser.readline()
+        packet1 = response1.decode()
+        if packet1 != "1":
+            print("Error: Alt command denied")
 
         return [packet1, packet2]
 
