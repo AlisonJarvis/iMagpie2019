@@ -74,12 +74,14 @@ class Mount:
         az = az.rjust(8, '0')
 
         self.ser.write(b':Sz' + az.encode() + b'#')  # define command azimuth
+        print(b':Sz' + az.encode() + b'#')
         response2 = self.ser.readline()
         packet2 = response2.decode()
         if packet2 != "1":
             print("Error: Az command denied")
             
         self.ser.write(b':Sas' + alt.encode() + b'#')  # define command altitude
+        print(b':Sas' + alt.encode() + b'#')
         response1 = self.ser.readline()
         packet1 = response1.decode()
         if packet1 != "1":
@@ -127,4 +129,27 @@ class Mount:
         if packet != '1':
             print('Error: we gon keep slewing')
         return packet
+
+    def set_ra_dec(self, ra, dec):
+        ra = ra * 3
+        ra = round(ra)
+        ra = str(ra)
+        ra = ra.rjust(8, '0')
+
+        dec = dec * 360000
+        dec = round(dec)
+        dec = str(dec)
+        dec = dec.rjust(8, '0')
+
+        self.ser.write(b':Sr' + ra.encode() + b'#')  # RA command
+        response1 = self.ser.readline()
+        packet1 = response1.decode()
+        if packet1 != "1":
+            print("Error: RA command denied")
+
+        self.ser.write(b':Sds' + dec.encode() + b'#')  # dec command
+        response2 = self.ser.readline()
+        packet2 = response1.decode()
+        if packet2 != "1":
+            print("Error: dec command denied")
 
