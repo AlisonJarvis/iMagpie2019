@@ -133,26 +133,42 @@ class Mount:
             print('Error: we gon keep slewing')
         return packet
 
-    # def set_ra_dec(self, ra, dec):
-    #     ra = ra * (3.6*10 ** 6)  # this goes from hrs to ms
-    #     ra = round(ra)
-    #     ra = str(ra)
-    #     ra = ra.rjust(8, '0')
-    #
-    #     dec = dec * 360000
-    #     dec = round(dec)
-    #     dec = str(dec)
-    #     dec = dec.rjust(8, '0')
-    #
-    #     self.ser.write(b':Sr' + ra.encode() + b'#')  # RA command
-    #     response1 = self.ser.readline()
-    #     packet1 = response1.decode()
-    #     if packet1 != "1":
-    #         print("Error: RA command denied")
-    #
-    #     self.ser.write(b':Sds' + dec.encode() + b'#')  # dec command
-    #     response2 = self.ser.readline()
-    #     packet2 = response1.decode()
-    #     if packet2 != "1":
-    #         print("Error: dec command denied")
+    def set_ra_dec(self, ra, dec):
+        ra = ra * (3.6*10 ** 6)  # this goes from hrs to ms
+        ra = round(ra)
+        ra = str(ra)
+        ra = ra.rjust(8, '0')
 
+        dec = dec * 360000
+        dec = round(dec)
+        if dec >= 0:
+            signstr = '+'
+        else:
+            signstr = '-'
+        dec = abs(dec)
+        dec = str(dec)
+        dec = dec.rjust(8, '0')
+
+        self.ser.write(b':Sr' + ra.encode() + b'#')  # RA command
+        response1 = self.ser.readline()
+        packet1 = response1.decode()
+        if packet1 != "1":
+            print("Error: RA command denied")
+
+        self.ser.write(b':Sd' + signstr.encode() + dec.encode() + b'#')  # dec command
+        response2 = self.ser.readline()
+        packet2 = response1.decode()
+        if packet2 != "1":
+            print("Error: dec command denied")
+
+    def current_ra_dec(self):
+        self.ser.write(b':GEC#')
+        response = self.ser.readline()
+        packet = response.decode()
+        return packet
+
+    def set_mech_zero(self):
+        self.ser.write(b':SZP#')
+        response = self.ser.readline()
+        packet = response.decode()
+        return packet
