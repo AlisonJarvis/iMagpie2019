@@ -21,14 +21,13 @@ def save_control_values(filename, settings):
 
 
 env_filename = os.getenv('ZWO_ASI_LIB')
-#env_filename = '/Users/chasepuskar/Downloads/ASI_linux_mac_SDK_V1.14.1119/lib/mac/libASICamera2.a'
 
 parser = argparse.ArgumentParser(description='Process and save images from a camera')
 parser.add_argument('filename',
                     nargs='?',
                     help='SDK library filename')
 args = parser.parse_args()
-args.filename = '/Users/chasepuskar/Downloads/ASI_linux_mac_SDK_V1.14.1119/lib/mac/libASICamera2.dylib';
+args.filename = '/home/pi/Desktop/ZWO ASI Software Library/lib/armv8/libASICamera2.so';
 
 # Initialize zwoasi with the name of the SDK library
 if args.filename:
