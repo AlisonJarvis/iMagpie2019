@@ -3,15 +3,11 @@ from Mount import Mount
 from GSM import GSM
 
 mount = Mount("/dev/tty.usbserial-AQ00LYCP",9600, 5)
-gsm = GSM("/dev/tty.usbserial-AQ00LYCP",9600, 5)
 number = '+1XXXXXXXXXX'
 
-gsm.set_to_sms()
-msg = gsm.read_msg(0,0)
-if msg == "Start":
-    while True:
-        cmd = gsm.read_msg(0, 0)
-        time.sleep(3)
+
+def workflowtest(cmd):
+
         if cmd[0] == '0':
             # RA/Dec Command
             # format: 0<hhmmss><+/-><xxx>.<xxxx><hhmmss>
@@ -20,7 +16,7 @@ if msg == "Start":
             hrs = ra[0:1]
             minutes = ra[2:3]
             sec = ra[3:5]
-            ra = float(hrs)*3600 + float(minutes)*60 + float(sec)
+            ra = float(hrs) * 3600 + float(minutes) * 60 + float(sec)
 
             dec = float(cmd[7:15])
             t = cmd[16:21]  # this might need to be typecast
@@ -32,6 +28,7 @@ if msg == "Start":
             # camera stuff here
 
             # astrometry/image processing
+            return
         if cmd[0] == '1':
             # NORAD ID Command
             # format: 1<XXXXX(5-digit NORAD ID)><hhmmss>
@@ -48,9 +45,18 @@ if msg == "Start":
             # camera stuff here
 
             # astrometry/image processing
+            return
 
         # send stuff back to CCAR
         # format: <hhmmss><+/-><xxx>.<xxxx><hhmmss><hhmmss><+/-><xxx>.<xxxx><hhmmss>
         msg_out = 'something'  # this comes from image processing
 
-        gsm.send_sms(number, msg_out)
+
+# Sample RA/Dec Command
+# format: 0<hhmmss><+/-><xxx>.<xxxx><hhmmss>
+ra_dec_cmd = '0053654045.1234133033'
+
+# NORAD ID Command
+# format: 1<XXXXX(5-digit NORAD ID)><hhmmss>
+NORAD_cmd = '25544133033'
+
