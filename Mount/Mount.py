@@ -71,10 +71,11 @@ class Mount:
     def set_alt_az(self, alt, az):
 
         self.altaz = True
-
+        self.alt = alt
+        self.az = az
         alt = alt * 360000
         alt = round(alt)
-        self.alt = alt
+
         if alt >= 0:
             signstr = '+'
         else:
@@ -85,7 +86,7 @@ class Mount:
 
         az = az * 360000
         az = round(az)
-        self.az = az
+
         az = str(az)
         az = az.rjust(8, '0')
 
@@ -113,22 +114,24 @@ class Mount:
         else:
             if self.altaz:
                 packet_check = self.current_alt_az()
-                alt = int(packet_check[0:8])
-                az = int(packet_check[9:17])
-                while (alt<(self.alt-10)) or (alt>(self.alt+10)) or (az<(self.az-10)) or (az>(self.az+10)):
+
+                alt = float(packet_check[0])
+
+                az = float(packet_check[1])
+                while (alt<(self.alt-0.001)) or (alt>(self.alt+0.001)) or (az<(self.az-0.001)) or (az>(self.az+0.001)):
                     packet_check = self.current_alt_az()
-                    alt = int(packet_check[0:8])
-                    az = int(packet_check[9:17])
-                    time.sleep(0.5)
+                    alt = float(packet_check[0])
+                    az = float(packet_check[1])
+
                 return packet
             else:
                 packet_check = self.current_ra_dec()
-                dec = int(packet_check[0:8])
-                ra = int(packet_check[9:16])
+                dec = int(str(packet_check[0:8]))
+                ra = int(str(packet_check[9:16]))
                 while (ra<(self.alt-10)) or (ra>(self.alt+10)) or (dec<(self.az-10)) or (dec>(self.az+10)):
                     packet_check = self.current_alt_az()
-                    dec = int(packet_check[0:8])
-                    ra = int(packet_check[9:16])
+                    dec = int(str(packet_check[0:8]))
+                    ra = int(str(packet_check[9:16]))
                     time.sleep(0.5)
                 return packet
 

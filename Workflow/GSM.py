@@ -52,11 +52,12 @@ class GSM:
         self.ser.write(b'AT+CMGR=' + index.encode() + b'[,' + mode.encode() + b']')
         # <mode> 0 Normal
         #        1 Not change status of the specified SMS record
+        print('Waiting for msg...')
         response = self.ser.readline()
         packet = response.decode()
 
         if packet == "GSMStatus":
-            number = 'sdfd'
+            # number = 'sdfd'
             self.check_status(1, number)
         return packet
 
