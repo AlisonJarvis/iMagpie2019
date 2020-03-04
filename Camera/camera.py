@@ -27,7 +27,7 @@ parser.add_argument('filename',
                     nargs='?',
                     help='SDK library filename')
 args = parser.parse_args()
-args.filename = '/home/pi/Desktop/ZWO ASI Software Library/lib/armv8/libASICamera2.so';
+args.filename = '../ZWO_ASI_Library/lib/armv7/libASICamera2.so';
 
 # Initialize zwoasi with the name of the SDK library
 if args.filename:
