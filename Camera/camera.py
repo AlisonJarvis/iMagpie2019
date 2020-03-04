@@ -70,21 +70,21 @@ for cn in sorted(controls.keys()):
 
 
 # Use minimum USB bandwidth permitted
-camera.set_control_value(asi.ASI_BANDWIDTHOVERLOAD, camera.get_controls()['BandWidth']['MinValue'])
+camera.set_control_value(asi.ASI_BANDWIDTHOVERLOAD, camera.get_controls()['BandWidth']['DefaultValue'])
 
 # Set some sensible defaults. They will need adjusting depending upon
 # the sensitivity, lens and lighting conditions used.
 camera.disable_dark_subtract()
 
 camera.set_control_value(asi.ASI_GAIN, 0)
-camera.set_control_value(asi.ASI_EXPOSURE, 16000)
+camera.set_control_value(asi.ASI_EXPOSURE, 10000)
 camera.set_control_value(asi.ASI_WB_B, 99)
 camera.set_control_value(asi.ASI_WB_R, 75)
 camera.set_control_value(asi.ASI_GAMMA, 50)
 camera.set_control_value(asi.ASI_BRIGHTNESS, 50)
 camera.set_control_value(asi.ASI_FLIP, 0)
 
-
+# 8-BIT MONO IMAGE CAPTURE
 print('Enabling stills mode')
 try:
     # Force any single exposure to be halted
@@ -102,24 +102,51 @@ camera.capture(filename=filename)
 print('Saved to %s' % filename)
 save_control_values(filename, camera.get_control_values())
 
+# VIDEO MODE
+# Enable video mode
+try:
+    # Force any single exposure to be halted
+    camera.stop_exposure()
+except (KeyboardInterrupt, SystemExit):
+    raise
+except:
+    pass
 
+print('Enabling video mode')
+camera.start_video_capture()
+
+# Set the timeout, units are ms
+timeout = (camera.get_control_value(asi.ASI_EXPOSURE)[0] / 1000) * 2 + 500
+camera.default_timeout = timeout
+
+print('Capturing a single 8-bit mono frame')
+filename = 'image_video_mono.jpg'
+camera.set_image_type(asi.ASI_IMG_RAW8)
+
+# need to figure out setting up a circular buffer, displaying image
+data = camera.get_video_data()
+
+camera.capture_video_frame(filename=filename)
+camera.stop_video_capture()
+
+print('Saved to %s' % filename)
+save_control_values(filename, camera.get_control_values())
+
+
+
+## 16-BIT MONO IMAGE CAPTURE
 # print('Capturing a single 16-bit mono image')
 # filename = 'image_mono16.tiff'
 # camera.set_image_type(asi.ASI_IMG_RAW16)
 # camera.capture(filename=filename)
 # print('Saved to %s' % filename)
 # save_control_values(filename, camera.get_control_values())
+# 
+# from PIL import Image
+# img1 = Image.open('image_mono16.tiff')
+# img1.point(lambda i:i*(1./256)).convert('L').save('my.png')
 
-# if camera_info['IsColorCam']:
-#     filename = 'image_color.jpg'
-#     camera.set_image_type(asi.ASI_IMG_RGB24)
-#     print('Capturing a single, color image')
-#     camera.capture(filename=filename)
-#     print('Saved to %s' % filename)
-#     save_control_values(filename, camera.get_control_values())
-# else:
-#     print('Color image not available with this camera')
-    
+## DEMO VIDEO CODE
 # # Enable video mode
 # try:
 #     # Force any single exposure to be halted
@@ -128,20 +155,21 @@ save_control_values(filename, camera.get_control_values())
 #     raise
 # except:
 #     pass
-
+# 
 # print('Enabling video mode')
 # camera.start_video_capture()
-
-# # Restore all controls to default values except USB bandwidth
+# 
+# #Restore all controls to default values except USB bandwidth
 # for c in controls:
 #     if controls[c]['ControlType'] == asi.ASI_BANDWIDTHOVERLOAD:
 #         continue
 #     camera.set_control_value(controls[c]['ControlType'], controls[c]['DefaultValue'])
-
+# 
 # # Set the timeout, units are ms
 # timeout = (camera.get_control_value(asi.ASI_EXPOSURE)[0] / 1000) * 2 + 500
+# print(timeout)
 # camera.default_timeout = timeout
-
+# 
 # if camera_info['IsColorCam']:
 #     print('Capturing a single color frame')
 #     filename = 'image_video_color.jpg'
@@ -152,6 +180,6 @@ save_control_values(filename, camera.get_control_values())
 #     filename = 'image_video_mono.jpg'
 #     camera.set_image_type(asi.ASI_IMG_RAW8)
 #     camera.capture_video_frame(filename=filename)
-
+# 
 # print('Saved to %s' % filename)
 # save_control_values(filename, camera.get_control_values())
