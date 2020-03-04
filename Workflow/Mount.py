@@ -158,6 +158,18 @@ class Mount:
         if packet != '1':
             print('Error: we not going there home boi')
         return packet
+        packet_check = self.current_alt_az()
+
+        alt = float(packet_check[0])
+
+        az = float(packet_check[1])
+        while (alt < (self.alt - 0.001)) or (alt > (self.alt + 0.001)) or (az < (self.az - 0.001)) or (
+                az > (self.az + 0.001)):
+            packet_check = self.current_alt_az()
+            alt = float(packet_check[0])
+            az = float(packet_check[1])
+
+        return packet
 
     def stop_slew(self):
         self.ser.write(b':Q#')  # stop slewing
@@ -169,11 +181,9 @@ class Mount:
 
     def set_ra_dec(self, ra, dec):
 
-
-
         self.altaz = False
 
-        ra = ra * (3.6*10 ** 6)  # this goes from hrs to ms
+        ra = ra * 1000  # this goes from s to ms
         ra = round(ra)
         self.ra = ra
         ra = str(ra)
@@ -201,6 +211,11 @@ class Mount:
         packet2 = response1.decode()
         if packet2 != "1":
             print("Error: dec command denied")
+
+    def decode_ra_dec(self, inputstr):
+        dec = inputstr[0] + str(int(inputstr[1:8]) / 360000)
+        ra = str(int(inputstr[9:16])/1000)  # ms to s
+        return [ra, dec]
 
     def current_ra_dec(self):
         self.ser.write(b':GEC#')
