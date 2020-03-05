@@ -132,6 +132,75 @@ camera.stop_video_capture()
 print('Saved to %s' % filename)
 save_control_values(filename, camera.get_control_values())
 
+## VIDEO CODE
+SIZE = (640, 480)
+
+def get_image(camera):
+    data = camera.get_video_data()
+    whbi = camera.get_roi_format()
+    shape = [whbi[1], whbi[0]]
+    if whbi[3] == ASI_IMG_RAW8 or whbi[3] == ASI_IMG_Y8:
+        img = np.frombuffer(data, dtype=np.uint8)
+    elif whbi[3] == ASI_IMG_RAW16:
+        img = np.frombuffer(data, dtype=np.uint16)
+    elif whbi[3] == ASI_IMG_RGB24:
+        img = np.frombuffer(data, dtype=np.uint8)
+        shape.append(3)
+    else:
+        raise ValueError('Unsupported image type')
+    img = img.reshape(shape)
+
+    mode = None
+    if len(img.shape) == 3:
+        img = img[:, :, ::-1]  # Convert BGR to RGB
+    if whbi[3] == ASI_IMG_RAW16:
+        mode = 'I;16'
+    image = Image.fromarray(img, mode=mode)
+    return image
+
+def pil_to_wx(image):
+    width, height = image.size
+    buffer = image.convert('RGB').tostring()
+    bitmap = wx.BitmapFromBuffer(width, height, buffer)
+    return bitmap
+
+class Panel(wx.Panel):
+    def __init__(self, parent):
+        super(Panel, self).__init__(parent, -1)
+        self.SetSize(SIZE)
+        self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
+        self.Bind(wx.EVT_PAINT, self.on_paint)
+        self.update()
+    def update(self):
+        self.Refresh()
+        self.Update()
+        wx.CallLater(15, self.update)
+    def create_bitmap(self):
+        image = get_image()
+        bitmap = pil_to_wx(image)
+        return bitmap
+    def on_paint(self, event):
+        bitmap = self.create_bitmap()
+        dc = wx.AutoBufferedPaintDC(self)
+        dc.DrawBitmap(bitmap, 0, 0)
+
+class Frame(wx.Frame):
+    def __init__(self):
+        style = wx.DEFAULT_FRAME_STYLE & ~wx.RESIZE_BORDER & ~wx.MAXIMIZE_BOX
+        super(Frame, self).__init__(None, -1, 'Camera Viewer', style=style)
+        panel = Panel(self)
+        self.Fit()
+
+def main():
+    app = wx.PySimpleApp()
+    frame = Frame()
+    frame.Center()
+    frame.Show()
+    app.MainLoop()
+
+if __name__ == '__main__':
+    main()
+
 
 
 ## 16-BIT MONO IMAGE CAPTURE
