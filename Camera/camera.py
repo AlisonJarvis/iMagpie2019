@@ -30,6 +30,47 @@ def save_control_values(filename, settings):
             f.write('%s: %s\n' % (k, str(settings[k])))
     print('Camera settings saved to %s' % filename)
 
+def save_image(camera):
+    print('Enabling stills mode')
+    try:
+        # Force any single exposure to be halted
+        camera.stop_video_capture()
+        camera.stop_exposure()
+    except (KeyboardInterrupt, SystemExit):
+        raise
+    except:
+        pass
+    print('Capturing a single 8-bit mono image')
+    filename = 'image_mono.jpg'
+    camera.set_image_type(asi.ASI_IMG_RAW8)
+    camera.capture(filename=filename)
+    print('Saved to %s' % filename)
+    save_control_values(filename, camera.get_control_values())
+
+def start_video_feed(camera):
+    # Enable video mode
+    try:
+        # Force any single exposure to be halted
+        camera.stop_exposure()
+    except (KeyboardInterrupt, SystemExit):
+        raise
+    except:
+        pass
+
+    print('Enabling video mode')
+    camera.start_video_capture()
+
+    # Set the timeout, units are ms
+    timeout = (camera.get_control_value(asi.ASI_EXPOSURE)[0] / 1000) * 2 + 500
+    camera.default_timeout = timeout
+
+    # Set up window and display images
+    app = wx.App()
+    frame = Frame(camera)
+    frame.Center()
+    frame.Show()
+    app.MainLoop()
+
 def get_image(camera):
     data = camera.get_video_data()
     whbi = camera.get_roi_format()
@@ -95,7 +136,8 @@ parser.add_argument('filename',
                     nargs='?',
                     help='SDK library filename')
 args = parser.parse_args()
-args.filename = '../ZWO_ASI_Library/lib/armv7/libASICamera2.so';
+#args.filename = '../ZWO_ASI_Library/lib/armv7/libASICamera2.so';
+args.filename = '../ZWO_ASI_Library/lib/mac/libASICamera2.dylib';
 
 # Initialize zwoasi with the name of the SDK library
 if args.filename:
@@ -138,7 +180,7 @@ for cn in sorted(controls.keys()):
 
 
 # Use minimum USB bandwidth permitted
-camera.set_control_value(asi.ASI_BANDWIDTHOVERLOAD, camera.get_controls()['BandWidth']['DefaultValue'])
+camera.set_control_value(asi.ASI_BANDWIDTHOVERLOAD, camera.get_controls()['BandWidth']['MaxValue'])
 
 # Set some sensible defaults. They will need adjusting depending upon
 # the sensitivity, lens and lighting conditions used.
@@ -153,60 +195,10 @@ camera.set_control_value(asi.ASI_BRIGHTNESS, 50)
 camera.set_control_value(asi.ASI_FLIP, 0)
 
 # 8-BIT MONO IMAGE CAPTURE
-print('Enabling stills mode')
-try:
-    # Force any single exposure to be halted
-    camera.stop_video_capture()
-    camera.stop_exposure()
-except (KeyboardInterrupt, SystemExit):
-    raise
-except:
-    pass
+save_image(camera)
 
-print('Capturing a single 8-bit mono image')
-filename = 'image_mono.jpg'
-camera.set_image_type(asi.ASI_IMG_RAW8)
-camera.capture(filename=filename)
-print('Saved to %s' % filename)
-save_control_values(filename, camera.get_control_values())
-
-# VIDEO MODE
-# Enable video mode
-try:
-    # Force any single exposure to be halted
-    camera.stop_exposure()
-except (KeyboardInterrupt, SystemExit):
-    raise
-except:
-    pass
-
-print('Enabling video mode')
-camera.start_video_capture()
-
-# Set the timeout, units are ms
-timeout = (camera.get_control_value(asi.ASI_EXPOSURE)[0] / 1000) * 2 + 500
-camera.default_timeout = timeout
-
-# print('Capturing a single 8-bit mono frame')
-# filename = 'image_video_mono.jpg'
-# camera.set_image_type(asi.ASI_IMG_RAW8)
-
-# # need to figure out setting up a circular buffer, displaying image
-# data = camera.get_video_data()
-
-# camera.capture_video_frame(filename=filename)
-# camera.stop_video_capture()
-
-# print('Saved to %s' % filename)
-# save_control_values(filename, camera.get_control_values())
-
-## VIDEO CODE
-app = wx.App()
-frame = Frame(camera)
-frame.Center()
-frame.Show()
-app.MainLoop()
-
+# LIVE VIDEO FEED
+start_video_feed(camera)
 
 ## 16-BIT MONO IMAGE CAPTURE
 # print('Capturing a single 16-bit mono image')
