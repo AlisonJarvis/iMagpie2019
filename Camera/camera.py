@@ -13,6 +13,13 @@ __license__ = 'MIT'
 
 SIZE = (640, 480)
 
+# ASI_IMGTYPE
+ASI_IMG_RAW8 = 0
+ASI_IMG_RGB24 = 1
+ASI_IMG_RAW16 = 2
+ASI_IMG_Y8 = 3
+ASI_IMG_END = -1
+
 
 def save_control_values(filename, settings):
     filename += '.txt'
