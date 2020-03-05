@@ -55,7 +55,7 @@ def get_image(camera):
 
 def pil_to_wx(image):
     width, height = image.size
-    buffer = image.convert('RGB').tostring()
+    buffer = image.convert('RGB').tobytes()
     bitmap = wx.BitmapFromBuffer(width, height, buffer)
     return bitmap
 
