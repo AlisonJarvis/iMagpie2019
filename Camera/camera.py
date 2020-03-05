@@ -6,6 +6,7 @@ import sys
 import time
 import zwoasi as asi
 import numpy as np
+from PIL import Image
 import wx
 
 __author__ = 'Steve Marple'
@@ -215,7 +216,6 @@ app.MainLoop()
 # print('Saved to %s' % filename)
 # save_control_values(filename, camera.get_control_values())
 # 
-# from PIL import Image
 # img1 = Image.open('image_mono16.tiff')
 # img1.point(lambda i:i*(1./256)).convert('L').save('my.png')
 
