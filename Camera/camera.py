@@ -5,6 +5,7 @@ import os
 import sys
 import time
 import zwoasi as asi
+import numpy as np
 import wx
 
 __author__ = 'Steve Marple'
@@ -199,7 +200,7 @@ camera.default_timeout = timeout
 # save_control_values(filename, camera.get_control_values())
 
 ## VIDEO CODE
-app = wx.PySimpleApp()
+app = wx.App()
 frame = Frame(camera)
 frame.Center()
 frame.Show()
