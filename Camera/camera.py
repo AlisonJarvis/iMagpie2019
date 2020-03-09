@@ -13,9 +13,14 @@ __author__ = 'Steve Marple'
 __version__ = '0.1.0'
 __license__ = 'MIT'
 
-SIZE = (640, 480)
-WIDTH = 4656
-HEIGHT = 3520
+
+PIXEL_WIDTH = 4656
+PIXEL_HEIGHT = 3520
+
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 480
+
+SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
 
 # ASI_IMGTYPE
 ASI_IMG_RAW8 = 0
@@ -32,10 +37,32 @@ def save_control_values(filename, settings):
             f.write('%s: %s\n' % (k, str(settings[k])))
     print('Camera settings saved to %s' % filename)
 
-def get_bitmap(camera):
+def get_image(camera):
     data = camera.get_video_data()
-    buffer = np.repeat(bytes(data),3)
-    bitmap = wx.Bitmap.FromBuffer(WIDTH, HEIGHT, buffer)
+    whbi = camera.get_roi_format()
+    shape = [whbi[1], whbi[0]]
+    if whbi[3] == ASI_IMG_RAW8 or whbi[3] == ASI_IMG_Y8:
+        img = np.frombuffer(data, dtype=np.uint8)
+    elif whbi[3] == ASI_IMG_RAW16:
+        img = np.frombuffer(data, dtype=np.uint16)
+    elif whbi[3] == ASI_IMG_RGB24:
+        img = np.frombuffer(data, dtype=np.uint8)
+        shape.append(3)
+    else:
+        raise ValueError('Unsupported image type')
+    img = img.reshape(shape)
+
+    mode = None
+    if len(img.shape) == 3:
+        img = img[:, :, ::-1]  # Convert BGR to RGB
+    if whbi[3] == ASI_IMG_RAW16:
+        mode = 'I;16'
+    image = Image.fromarray(img, mode=mode)
+    return image
+
+def pil_to_wx(image):
+    buffer = image.convert('RGB').tobytes()
+    bitmap = wx.Bitmap.FromBuffer(SCREEN_WIDTH, SCREEN_HEIGHT, buffer)
     return bitmap
 
 class Panel(wx.Panel):
@@ -51,7 +78,8 @@ class Panel(wx.Panel):
         self.Update()
         wx.CallLater(15, self.update)
     def create_bitmap(self):
-        bitmap = get_bitmap(self.camera)
+        image = get_image(self.camera)
+        bitmap = pil_to_wx(image)
         return bitmap
     def on_paint(self, event):
         bitmap = self.create_bitmap()
@@ -122,6 +150,7 @@ class ImageSensor():
         camera.set_control_value(asi.ASI_GAMMA, 50)
         camera.set_control_value(asi.ASI_BRIGHTNESS, 50)
         camera.set_control_value(asi.ASI_FLIP, 0)
+        camera.set_image_type(asi.ASI_IMG_Y8)
         self.camera = camera
     def save_image(self,exposure_time):
     	# t_exp is given in microseconds
@@ -141,7 +170,6 @@ class ImageSensor():
         # Take image
         print('Capturing a single 8-bit mono image')
         filename = 'image_mono.jpg'
-        self.camera.set_image_type(asi.ASI_IMG_RAW8)
         self.camera.capture(filename=filename)
         print('Saved to %s' % filename)
         save_control_values(filename, self.camera.get_control_values())
@@ -156,7 +184,7 @@ class ImageSensor():
         except:
             pass
         # set roi to fit resolution of screen
-        self.camera.set_roi(width=8,height=2,image_type=ASI_IMG_Y8)
+        self.camera.set_roi(width=SCREEN_WIDTH,height=SCREEN_HEIGHT)
         print(self.camera.get_roi_format())
         # Start video feed
         print('Enabling video mode')
