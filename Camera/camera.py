@@ -66,7 +66,6 @@ class Frame(wx.Frame):
         panel = Panel(self)
         self.Fit()
 
-
 class ImageSensor():
     def __init__(self):
         env_filename = os.getenv('ZWO_ASI_LIB')
@@ -76,7 +75,7 @@ class ImageSensor():
                             help='SDK library filename')
         args = parser.parse_args()
         args.filename = '../ZWO_ASI_Library/lib/armv7/libASICamera2.so';
-        #args.filename = '../ZWO_ASI_Library/lib/mac/libASICamera2.dylib';
+        #args.filename = '../ZWO_ASI_Library/lib/mac/libASICamera2.dylib'; # mac case
         # Initialize zwoasi with the name of the SDK library
         if args.filename:
             asi.init(args.filename)
@@ -124,7 +123,8 @@ class ImageSensor():
         camera.set_control_value(asi.ASI_BRIGHTNESS, 50)
         camera.set_control_value(asi.ASI_FLIP, 0)
         self.camera = camera
-    def save_image(self):
+    def save_image(self,exposure_time):
+    	# t_exp is given in microseconds
         print('Enabling stills mode')
         try:
             # Force any single exposure to be halted
@@ -134,6 +134,11 @@ class ImageSensor():
             raise
         except:
             pass
+        # set roi to maximum width and height
+        self.camera.set_roi()
+        # Set exposure length
+        self.camera.set_control_value(asi.ASI_EXPOSURE,exposure_time)
+        # Take image
         print('Capturing a single 8-bit mono image')
         filename = 'image_mono.jpg'
         self.camera.set_image_type(asi.ASI_IMG_RAW8)
@@ -144,11 +149,15 @@ class ImageSensor():
         # Enable video mode
         try:
             # Force any single exposure to be halted
-            camera.stop_exposure()
+            self.camera.stop_video_capture()
+            self.camera.stop_exposure()
         except (KeyboardInterrupt, SystemExit):
             raise
         except:
             pass
+        # set roi to fit resolution of screen
+        self.camera.set_roi(width=8,height=2)
+        # Start video feed
         print('Enabling video mode')
         self.camera.start_video_capture()
         # Set the timeout, units are ms
@@ -165,7 +174,8 @@ class ImageSensor():
 imageSensor = ImageSensor()
 
 # 8-BIT MONO IMAGE CAPTURE
-imageSensor.save_image()
+t_exp = 10000 # microseconds
+imageSensor.save_image(exposure_time=t_exp)
 
 # LIVE VIDEO FEED
 imageSensor.start_video_feed()
