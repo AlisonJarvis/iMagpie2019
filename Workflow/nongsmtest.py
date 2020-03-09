@@ -5,7 +5,7 @@ import taskHelper
 import datetime
 from datetime import timedelta
 
-mount = Mount("/dev/tty.usbserial-AQ00LYCP",9600, 5)
+mount = Mount("/dev/ttyUSB0",9600, 5)
 number = '+1XXXXXXXXXX'
 
 
@@ -35,8 +35,9 @@ def workflowtest(cmd):
         if cmd[0] == '1':
             # NORAD ID Command
             # format: 1<XXXXX(5-digit NORAD ID)><hhmmss>
-            n_id = cmd[1:5]
-            t = cmd[6:11]
+            n_id = cmd[1:6]
+            print(n_id)
+            t = cmd[7:12]
 
             utc_now = datetime.datetime.utcnow()
             LAT = 40.010091
@@ -73,9 +74,9 @@ NORAD_cmd = '125544133033'
 
 # ra/dec test
 #workflowtest(ra_dec_cmd)
-mount.current_ra_dec()
+# mount.current_ra_dec()
 
-time.sleep(10)
+# time.sleep(10)
 
 # NORAD ID test
 workflowtest(NORAD_cmd)

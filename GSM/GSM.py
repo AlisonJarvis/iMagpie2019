@@ -49,6 +49,8 @@ class GSM:
     def read_msg(self, index, mode):
         # <index> Integer type; value in the range of location numbers supported
         #         by the associated memory
+        index = str(index)
+        mode = str(mode)
         self.ser.write(b'AT+CMGR=' + index.encode() + b'[,' + mode.encode() + b']')
         # <mode> 0 Normal
         #        1 Not change status of the specified SMS record
