@@ -74,8 +74,8 @@ class ImageSensor():
                             nargs='?',
                             help='SDK library filename')
         args = parser.parse_args()
-        args.filename = '../ZWO_ASI_Library/lib/armv7/libASICamera2.so';
-        #args.filename = '../ZWO_ASI_Library/lib/mac/libASICamera2.dylib'; # mac case
+        #args.filename = '../ZWO_ASI_Library/lib/armv7/libASICamera2.so';
+        args.filename = '../ZWO_ASI_Library/lib/mac/libASICamera2.dylib'; # mac case
         # Initialize zwoasi with the name of the SDK library
         if args.filename:
             asi.init(args.filename)
@@ -156,7 +156,8 @@ class ImageSensor():
         except:
             pass
         # set roi to fit resolution of screen
-        self.camera.set_roi(width=8,height=2)
+        self.camera.set_roi(width=8,height=2,image_type=ASI_IMG_Y8)
+        print(self.camera.get_roi_format())
         # Start video feed
         print('Enabling video mode')
         self.camera.start_video_capture()
