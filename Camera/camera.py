@@ -102,8 +102,8 @@ class ImageSensor():
                             nargs='?',
                             help='SDK library filename')
         args = parser.parse_args()
-        #args.filename = '../ZWO_ASI_Library/lib/armv7/libASICamera2.so';
-        args.filename = '../ZWO_ASI_Library/lib/mac/libASICamera2.dylib'; # mac case
+        args.filename = '../ZWO_ASI_Library/lib/armv7/libASICamera2.so';
+        #args.filename = '../ZWO_ASI_Library/lib/mac/libASICamera2.dylib'; # mac case
         # Initialize zwoasi with the name of the SDK library
         if args.filename:
             asi.init(args.filename)
