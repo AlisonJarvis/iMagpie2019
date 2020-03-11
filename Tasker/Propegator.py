@@ -1,11 +1,11 @@
-from pyorbital.astronomy import observer_position
+#from pyorbital.astronomy import observer_position
 from datetime import datetime
 from datetime import timedelta
-from pyorbital import astronomy, dt2np
+#from pyorbital import astronomy, dt2np
 import math as math
 import taskHelper
 import numpy as np
-from pycraf import satellite
+#from pycraf import satellite
 import matplotlib.pyplot as plt
 
 

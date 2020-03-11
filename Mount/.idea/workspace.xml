@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3994170f-c38e-48a4-9941-a7fa29c24ebc" name="Default Changelist" comment="" />
+    <list default="true" id="3994170f-c38e-48a4-9941-a7fa29c24ebc" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -27,7 +29,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="SvnConfiguration">
@@ -44,10 +46,10 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1201" y="278" key="FileChooserDialogImpl" timestamp="1581990507013">
+    <state x="1201" y="278" key="FileChooserDialogImpl" timestamp="1583944350881">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="1201" y="278" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1581990507013" />
+    <state x="1201" y="278" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1583944350881" />
     <state x="922" y="166" key="SettingsEditor" timestamp="1581990509609">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -56,6 +58,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1032" y="257" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1581993442302" />
+    <state x="656" y="344" key="com.intellij.ide.util.TipDialog" timestamp="1583944318823">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="656" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1583944318823" />
     <state x="1249" y="441" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1581993420646">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

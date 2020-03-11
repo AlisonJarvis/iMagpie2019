@@ -1,6 +1,6 @@
 import time
-from Mount import Mount
-from GSM import GSM
+#from Mount import Mount
+#from GSM import GSM
 import taskHelper
 import datetime
 from datetime import timedelta
